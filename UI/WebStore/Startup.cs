@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Routing.Template;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using WebStore.Clients.Services;
 using WebStore.DAL;
 using WebStore.DomainNew.Entities;
 using WebStore.Infrastructure;
@@ -37,10 +38,10 @@ namespace WebStore
                 options.Filters.Add(new SimpleActionFilter());
             });
 
-            services.AddSingleton<IEmployeesData, InMemoryEmployeeData>();
+            services.AddSingleton<IEmployeesData, EmployeesClient>();
             //services.AddScoped<IEmployeesData, InMemoryEmployeeData>();
             //services.AddTransient<IEmployeesData, InMemoryEmployeeData>();
-            services.AddScoped<IProductService, SqlProductService>();
+            services.AddScoped<IProductService, ProductsClient>();
             services.AddScoped<IOrdersService, SqlOrdersService>();
 
             services.AddDbContext<WebStoreContext>(options => options.UseSqlServer(
@@ -88,10 +89,9 @@ namespace WebStore
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseStaticFiles();
 
-            app.UseWelcomePage("/welcome");
-
-            app.Map("/index", CustomIndexHandler);
+            app.UseAuthentication();
 
             app.Use(async (context, next) =>
             {
@@ -108,9 +108,6 @@ namespace WebStore
 
             //app.UseMiddleware<TokenMiddleware>();
 
-            app.UseStaticFiles();
-
-            app.UseAuthentication();
 
             //app.UseMvcWithDefaultRoute();
             app.UseMvc(routes =>

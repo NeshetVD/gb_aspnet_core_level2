@@ -3,12 +3,12 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iis": {
-      "applicationUrl": "http://localhost/webstore",
+      "applicationUrl": "http://webstore.neshet.com",
       "sslPort": 0
     },
     "iisExpress": {
       "applicationUrl": "http://localhost:55562",
-      "sslPort": 44352
+      "sslPort": 44308
     }
   },
   "profiles": {
@@ -17,10 +17,11 @@
       "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+      },
+      "sqlDebugging": true
     },
     "WebStore": {
-      "commandName": "IISExpress",
+      "commandName": "IIS",
       "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"

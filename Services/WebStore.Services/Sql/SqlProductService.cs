@@ -6,6 +6,8 @@ using Microsoft.EntityFrameworkCore;
 using WebStore.DAL;
 using WebStore.Domain.Entities;
 using WebStore.Domain.Filters;
+using WebStore.DomainNew.Dto;
+using WebStore.DomainNew.Helper;
 using WebStore.Infrastructure.Interfaces;
 
 namespace WebStore.Infrastructure.Implementations
@@ -29,7 +31,7 @@ namespace WebStore.Infrastructure.Implementations
             return _context.Brands.ToList();
         }
 
-        public IEnumerable<Product> GetProducts(ProductFilter filter)
+        public IEnumerable<ProductDto> GetProducts(ProductFilter filter)
         {
             var products = _context.Products
                 .Include(p => p.Brand)
@@ -41,15 +43,22 @@ namespace WebStore.Infrastructure.Implementations
             if (filter.BrandId.HasValue)
                 products = products.Where(x => x.BrandId == filter.BrandId.Value);
 
-            return products.ToList();
+            return products
+                .Select(p => p.ToDto())
+                .ToList();
         }
 
-        public Product GetProductById(int id)
+        public ProductDto GetProductById(int id)
         {
-            return _context.Products
+            var product = _context.Products
                 .Include(p => p.Brand)
                 .Include(p => p.Section)
                 .FirstOrDefault(p => p.Id == id);
+
+            if (product == null)
+                return null;
+
+            return product.ToDto();
         }
     }
 }

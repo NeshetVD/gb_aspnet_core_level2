@@ -34,6 +34,7 @@ namespace WebStore
                 {
                     var logger = services.GetRequiredService<ILogger>();
                     logger.LogError(ex, "OOps. Something went wrong...");
+
                 }
             }
 

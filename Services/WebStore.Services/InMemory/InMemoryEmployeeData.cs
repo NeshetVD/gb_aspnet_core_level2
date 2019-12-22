@@ -36,6 +36,9 @@ namespace WebStore.Infrastructure.Implementations
 
         public void AddNew(EmployeeView model)
         {
+            if (model == null)
+                throw new ArgumentException(nameof(model));
+
             model.Id = _employees.Max(x=> x.Id) + 1;
             _employees.Add(model);
         }
@@ -61,6 +64,26 @@ namespace WebStore.Infrastructure.Implementations
         public EmployeeView GetById(int id)
         {
             return _employees.FirstOrDefault(x => x.Id == id);
+        }
+
+        public EmployeeView UpdateEmployee(int id, EmployeeView entity)
+        {
+            if (entity == null)
+                throw new ArgumentException(nameof(entity));
+
+            var employee = _employees.FirstOrDefault(x => x.Id == entity.Id);
+            if (employee == null)
+                throw new InvalidOperationException("No employee found");
+
+            // fill fields of model
+            employee.Id = entity.Id;
+            employee.FirstName = entity.FirstName;
+            employee.SurName = entity.SurName;
+            employee.Patronymic = entity.Patronymic;
+            employee.Age = entity.Age;
+            employee.Position = entity.Position;
+
+            return employee;
         }
     }
 }

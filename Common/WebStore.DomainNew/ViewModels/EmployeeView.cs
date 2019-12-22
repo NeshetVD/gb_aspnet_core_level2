@@ -24,5 +24,8 @@ namespace WebStore.ViewModels
 
         [Display(Name = "Возраст")]
         public int Age { get; set; }
+
+        [Display(Name = "Позиция")]
+        public string Position { get; set; }
     }
 }
